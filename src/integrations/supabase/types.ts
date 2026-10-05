@@ -14,16 +14,195 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      activity_logs: {
+        Row: {
+          action: string
+          actor_email: string | null
+          actor_id: string | null
+          actor_role: string | null
+          created_at: string
+          details: string | null
+          id: string
+        }
+        Insert: {
+          action: string
+          actor_email?: string | null
+          actor_id?: string | null
+          actor_role?: string | null
+          created_at?: string
+          details?: string | null
+          id?: string
+        }
+        Update: {
+          action?: string
+          actor_email?: string | null
+          actor_id?: string | null
+          actor_role?: string | null
+          created_at?: string
+          details?: string | null
+          id?: string
+        }
+        Relationships: []
+      }
+      email_notifications: {
+        Row: {
+          application_id: string
+          attempts: number
+          created_at: string
+          error: string | null
+          id: string
+          recipient: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          application_id: string
+          attempts?: number
+          created_at?: string
+          error?: string | null
+          id?: string
+          recipient: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          application_id?: string
+          attempts?: number
+          created_at?: string
+          error?: string | null
+          id?: string
+          recipient?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "email_notifications_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "guardian_applications"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      guardian_applications: {
+        Row: {
+          app_number: number
+          created_at: string
+          guardian_phone: string
+          id: string
+          location: string
+          requirements: string | null
+          status: string
+          student_class: string
+          student_gender: string
+          subject: string
+          tutor_preference: string
+          updated_at: string
+          whatsapp: string | null
+        }
+        Insert: {
+          app_number?: never
+          created_at?: string
+          guardian_phone: string
+          id?: string
+          location: string
+          requirements?: string | null
+          status?: string
+          student_class: string
+          student_gender: string
+          subject: string
+          tutor_preference: string
+          updated_at?: string
+          whatsapp?: string | null
+        }
+        Update: {
+          app_number?: never
+          created_at?: string
+          guardian_phone?: string
+          id?: string
+          location?: string
+          requirements?: string | null
+          status?: string
+          student_class?: string
+          student_gender?: string
+          subject?: string
+          tutor_preference?: string
+          updated_at?: string
+          whatsapp?: string | null
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          can_manage_moderators: boolean
+          created_at: string
+          created_by: string | null
+          disabled: boolean
+          email: string | null
+          full_name: string | null
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          can_manage_moderators?: boolean
+          created_at?: string
+          created_by?: string | null
+          disabled?: boolean
+          email?: string | null
+          full_name?: string | null
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          can_manage_moderators?: boolean
+          created_at?: string
+          created_by?: string | null
+          disabled?: boolean
+          email?: string | null
+          full_name?: string | null
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      claim_ownership: { Args: never; Returns: boolean }
+      configured_owner_email: { Args: never; Returns: string }
+      get_my_role: {
+        Args: never
+        Returns: {
+          can_manage_moderators: boolean
+          disabled: boolean
+          role: Database["public"]["Enums"]["app_role"]
+        }[]
+      }
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
+      is_staff: { Args: { _user_id: string }; Returns: boolean }
+      log_login: { Args: never; Returns: undefined }
+      write_log: {
+        Args: { _action: string; _actor: string; _details: string }
+        Returns: undefined
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "owner" | "admin" | "moderator"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +329,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["owner", "admin", "moderator"],
+    },
   },
 } as const
