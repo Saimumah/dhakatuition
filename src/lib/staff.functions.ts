@@ -79,7 +79,7 @@ export const updateStaff = createServerFn({ method: "POST" })
     if (caller.role !== "owner" && (data.role !== undefined || data.can_manage_moderators !== undefined))
       throw new Error("শুধু Owner role/permission পরিবর্তন করতে পারবে");
 
-    const patch: Record<string, unknown> = {};
+    const patch: { disabled?: boolean; role?: "admin" | "moderator"; can_manage_moderators?: boolean } = {};
     if (data.disabled !== undefined) patch.disabled = data.disabled;
     if (data.role !== undefined) patch.role = data.role;
     if (data.can_manage_moderators !== undefined) patch.can_manage_moderators = data.can_manage_moderators;
