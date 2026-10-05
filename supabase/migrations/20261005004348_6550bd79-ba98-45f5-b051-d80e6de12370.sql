@@ -1,0 +1,14 @@
+REVOKE EXECUTE ON FUNCTION public.has_role(uuid, public.app_role) FROM PUBLIC, anon;
+REVOKE EXECUTE ON FUNCTION public.is_staff(uuid) FROM PUBLIC, anon;
+REVOKE EXECUTE ON FUNCTION public.get_my_role() FROM PUBLIC, anon;
+REVOKE EXECUTE ON FUNCTION public.log_login() FROM PUBLIC, anon;
+REVOKE EXECUTE ON FUNCTION public.claim_ownership() FROM PUBLIC, anon;
+REVOKE EXECUTE ON FUNCTION public.protect_owner_role() FROM PUBLIC, anon, authenticated;
+REVOKE EXECUTE ON FUNCTION public.guard_application_update() FROM PUBLIC, anon, authenticated;
+REVOKE EXECUTE ON FUNCTION public.write_log(uuid,text,text) FROM PUBLIC, anon, authenticated;
+GRANT EXECUTE ON FUNCTION public.has_role(uuid, public.app_role) TO authenticated, service_role;
+GRANT EXECUTE ON FUNCTION public.is_staff(uuid) TO authenticated, service_role;
+GRANT EXECUTE ON FUNCTION public.get_my_role() TO authenticated;
+GRANT EXECUTE ON FUNCTION public.log_login() TO authenticated;
+GRANT EXECUTE ON FUNCTION public.claim_ownership() TO authenticated;
+GRANT EXECUTE ON FUNCTION public.write_log(uuid,text,text) TO service_role;
